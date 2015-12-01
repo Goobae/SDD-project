@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="edu.carthage.johnson.grant.aerophile.CustomProjectAdapter"
+    android:id="@+id/layout"
+    android:orientation="vertical"
+    android:weightSum="1"
+    android:clickable="true">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Project Name"
+        android:id="@+id/projectNameTextView"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.02"
+        android:gravity="center"
+        android:singleLine="false"
+        android:textColor="@android:color/darker_gray" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Partners: 0"
+            android:id="@+id/partnerCountTextView"
+            android:gravity="left"
+            android:singleLine="true"
+            android:layout_weight="0.59"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Size: 0MB"
+            android:id="@+id/sizeTextView"
+            android:gravity="right"
+            android:singleLine="true"
+            android:layout_weight="0.16"
+            android:layout_row="0"
+            android:layout_column="16"
+            android:textColor="@android:color/darker_gray" />
+    </GridLayout>
+</LinearLayout>

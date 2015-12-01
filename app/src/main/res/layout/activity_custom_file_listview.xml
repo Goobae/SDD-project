@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/LinearLayout"
+    android:weightSum="1">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/fileTypeImageView"
+        android:layout_weight=".15"
+        android:src="@drawable/ic_action_folder_closed" />
+
+    <TextView
+        android:layout_width="233dp"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="FileName"
+        android:id="@+id/fileNameTextView"
+        android:gravity="left|center"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="1MB"
+        android:id="@+id/fileSizeTextView"
+        android:layout_gravity="top|bottom"
+        android:gravity="center"
+        android:layout_weight="0.05" />
+
+</LinearLayout>
