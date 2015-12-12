@@ -1,5 +1,6 @@
 package edu.carthage.johnson.grant.aerophile;
 
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,18 +22,19 @@ public class ProjectHost extends ActionBarActivity{
 
     private String baseFilePath;
     private String currentFilePath;
+    private File currentFile;
     private ListView listView;
-    private File prevFile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project_host);
-
         listView = (ListView) findViewById(R.id.list);
 
-        baseFilePath = "/";
+        baseFilePath = Environment.getExternalStorageDirectory().getPath();
         currentFilePath = baseFilePath;
+        currentFile = new File(currentFilePath);
+
         if(getIntent().hasExtra("FilePath"))
         {
             baseFilePath = getIntent().getStringExtra("FilePath");
@@ -46,19 +49,38 @@ public class ProjectHost extends ActionBarActivity{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String fileName = (String) ((ListView)parent).getAdapter().getItem(position);
-
+                String newFilePath;
                 if(currentFilePath.endsWith(File.separator))
                 {
-                    fileName = currentFilePath + fileName;
+                    newFilePath = currentFilePath + fileName;
                 }
                 else
                 {
-                    fileName = currentFilePath + File.separator + fileName;
+                    newFilePath  = currentFilePath + File.separator + fileName;
                 }
 
-                if(new File(fileName).isDirectory())
+                File newFile = new File(fileName);
+                boolean canread = newFile.canRead();
+                boolean isdir = newFile.isDirectory();
+
+                boolean canwrite = newFile.canWrite();
+                boolean exists = newFile.exists();
+                boolean isfile = newFile.isFile();
+
+                String path = "./DCIM/";
+                File testFile = new File(newFilePath);
+                boolean canread2 = testFile.canRead();
+                boolean isdir2 = testFile.isDirectory();
+
+                boolean canwrite2 = testFile.canWrite();
+                boolean exists2 = testFile.exists();
+                boolean isfile2 = testFile.isFile();
+                File[] arr = newFile.listFiles();
+                if(testFile.isDirectory())
                 {
-                    PopulateList(fileName);
+                    currentFilePath = newFilePath;
+                    currentFile = newFile;
+                    PopulateList(currentFilePath);
                 }
             }
         });
@@ -69,7 +91,8 @@ public class ProjectHost extends ActionBarActivity{
 
         ArrayList files = new ArrayList();
         File directory = new File(path);
-
+        directory.setReadable(true);
+        boolean readable = directory.canRead();
         String[] list = directory.list();
         if(list != null)
         {
@@ -86,6 +109,28 @@ public class ProjectHost extends ActionBarActivity{
         ArrayAdapter adapter = new CustomFileAdapter(this, files);
        // ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, files);
         listView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        try {
+            if (!currentFilePath.equals(baseFilePath)) {
+                String parentPath = currentFile.getCanonicalFile().getParentFile().getCanonicalPath();
+
+                PopulateList(parentPath);
+                currentFilePath = parentPath;
+                currentFile = new File(currentFilePath);
+            } else {
+                super.onBackPressed();
+            }
+        }
+        catch (Exception e)
+        {
+            Toast toast = new Toast(this);
+            toast.setText(e.getMessage());
+            toast.show();
+        }
     }
 
     @Override
