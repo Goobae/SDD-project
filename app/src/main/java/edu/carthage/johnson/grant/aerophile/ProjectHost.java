@@ -140,6 +140,14 @@ public class ProjectHost extends ActionBarActivity{
             return true;
         }
 
+        if(id == R.id.qr_code) {
+            //THIS IS WHERE YOU INSERT YOUR IP
+            String qrInputText = "FUCK YOU HASBRO";
+
+            Intent printOut = new Intent(this, QRGenerated.class);
+            printOut.putExtra(qrInputText, "toGen");
+            startActivity(printOut);
+        }
         return super.onOptionsItemSelected(item);
     }
 }
