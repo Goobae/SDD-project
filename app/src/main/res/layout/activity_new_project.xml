@@ -11,7 +11,7 @@
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/projectTitleText"
+        android:id="@+id/projectNameTextView"
         android:singleLine="true"
         android:gravity="center"
         android:hint="Enter in a project name" />
@@ -21,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="400dp"
         android:id="@+id/horizLayout">
 
         <EditText

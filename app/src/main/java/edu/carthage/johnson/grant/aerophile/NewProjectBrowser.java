@@ -1,26 +1,25 @@
 package edu.carthage.johnson.grant.aerophile;
 
+import android.content.Intent;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
 
 
-public class ProjectHost extends ActionBarActivity{
+public class NewProjectBrowser extends ActionBarActivity {
 
     private String baseFilePath;
     private String currentFilePath;
+    private String projectName;
+    private SavedProjects savedProjects;
     private File currentFile;
     private ListView listView;
     private FileBrowser fileBrowser;
@@ -29,21 +28,22 @@ public class ProjectHost extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_browser);
+
+
+        if(getIntent().hasExtra("ProjectName"))
+        {
+            projectName = getIntent().getStringExtra("ProjectName");
+        }
+
+        if(getIntent().hasExtra("SavedProjects"));
+        {
+            savedProjects = getIntent().getParcelableExtra("SavedProjects");
+        }
+
         listView = (ListView) findViewById(R.id.list);
         fileBrowser = new FileBrowser();
 
         baseFilePath = Environment.getExternalStorageDirectory().getPath();
-
-        if(getIntent().hasExtra("BasePath"))
-        {
-            baseFilePath = getIntent().getStringExtra("BasePath");
-        }
-
-        if(getIntent().hasExtra("ProjectTitle"))
-        {
-            setTitle(getIntent().getStringExtra("ProjectTitle"));
-        }
-
         currentFilePath = baseFilePath;
         currentFile = new File(currentFilePath);
 
@@ -71,60 +71,40 @@ public class ProjectHost extends ActionBarActivity{
                 }
             }
         });
-    }
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
-    private void PopulateList(String path)
-    {
-
-        ArrayList files = new ArrayList();
-        File directory = new File(path);
-        directory.setReadable(true);
-        boolean readable = directory.canRead();
-        String[] list = directory.list();
-        if(list != null)
-        {
-            for(String file : list)
-            {
-                if(!file.startsWith("."))
-                {
-                    files.add(file);
+                Intent moveToNewProj = new Intent(parent.getContext(), NewProjectActivity.class);
+                String baseFilepath = (String) ((ListView) parent).getAdapter().getItem(position);
+                if (currentFilePath.endsWith(File.separator)) {
+                    baseFilepath = currentFilePath + baseFilepath;
+                } else {
+                    baseFilepath = currentFilePath + File.separator + baseFilepath;
                 }
-            }
-        }
-        Collections.sort(files);
+                moveToNewProj.putExtra("BasePath", baseFilepath);
+                if(getIntent().hasExtra("ProjectName"))
+                {
+                    moveToNewProj.putExtra("ProjectName", projectName);
+                }
 
-        ArrayAdapter adapter = new CustomFileAdapter(this, files);
-        listView.setAdapter(adapter);
+                if(getIntent().hasExtra("SavedProjects"))
+                {
+                    moveToNewProj.putExtra("SavedProjects", (Parcelable) savedProjects);
+                }
+
+                startActivity(moveToNewProj);
+                return false;
+
+            }
+        });
     }
 
-    @Override
-    public void onBackPressed()
-    {
-        try {
-            if (!currentFilePath.equals(baseFilePath)) {
-                String parentPath = currentFile.getCanonicalFile().getParentFile().getCanonicalPath();
-
-                PopulateList(parentPath);
-                currentFilePath = parentPath;
-                currentFile = new File(currentFilePath);
-            } else {
-                super.onBackPressed();
-            }
-        }
-        catch (Exception e)
-        {
-            Toast toast = new Toast(this);
-            toast.setText(e.getMessage());
-            toast.show();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_project_menu, menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.qr_code, menu);
+        getMenuInflater().inflate(R.menu.menu_new_project_browser, menu);
         return true;
     }
 

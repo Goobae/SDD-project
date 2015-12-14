@@ -31,17 +31,15 @@ public class CustomProjectAdapter extends ArrayAdapter<Project> {
 
         TextView projectName = (TextView) convertView.findViewById(R.id.projectNameTextView);
         TextView partnerCount = (TextView) convertView.findViewById(R.id.partnerCountTextView);
-        TextView projectSize = (TextView)convertView.findViewById(R.id.sizeTextView);
 
         projectName.setText(project.getProjectName());
         partnerCount.setText(Integer.toString(project.getPartnerCount()) + " Partner" + (project.getPartnerCount() == 1 ? "" : "s"));
-        projectSize.setText(Integer.toString(project.getProjectSize()));
         convertView.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (getContext(),ProjectHost.class);
                 intent.putExtra("ProjectTitle", project.getProjectName());
-
+                intent.putExtra("BasePath", project.getFilepath());
                 //intent.putExtra("TopicSubject",topic.getTopicTitle());
                 //intent.putExtra("BoardId", topic.getOnBoard());
                 //intent.putExtra("UserId", UserId);

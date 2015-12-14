@@ -1,19 +1,41 @@
 package edu.carthage.johnson.grant.aerophile;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class NewProjectActivity extends ActionBarActivity {
+    TextView filePathTV;
+    TextView projectNameTV;
 
+    SavedProjects savedProjects;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_project);
+        filePathTV = (TextView) this.findViewById(R.id.projectPathText);
+        projectNameTV = (TextView) this.findViewById(R.id.projectNameTextView);
+        if(getIntent().hasExtra("BasePath"))
+        {
+            filePathTV.setText(getIntent().getStringExtra("BasePath"));
+        }
+
+        if(getIntent().hasExtra("SavedProjects"))
+        {
+            savedProjects = (SavedProjects) getIntent().getParcelableExtra("SavedProjects");
+        }
+        else
+        {
+            savedProjects = new SavedProjects();
+        }
     }
 
 
@@ -42,19 +64,42 @@ public class NewProjectActivity extends ActionBarActivity {
     public void Browse(View view)
     {
         //opens file browser
+        Intent moveToBrowser = new Intent(this, NewProjectBrowser.class);
+        moveToBrowser.putExtra("ProjectName", projectNameTV.getText().toString());
+        moveToBrowser.putExtra("SavedProjects", (Parcelable) savedProjects);
+        startActivity(moveToBrowser);
         //does stuff
     }
 
     public void CreateProject(View view)
     {
         //create project
-        TextView projectNameTV = (TextView) view.findViewById(R.id.projectNameTextView);
         String projectName = projectNameTV.getText().toString();
-        TextView filePathTV = (TextView) view.findViewById(R.id.projectPathText);
-        String filePath = filePathTV.getText().toString();
-        Project newProject = new Project();
+        String filepath = filePathTV.getText().toString();
+        if(projectName == null || projectName.equals(""))
+        {
+            Toast toast = Toast.makeText(this, "Enter in a project name", Toast.LENGTH_SHORT);
+            toast.setText("Enter in a project name");
+            toast.setGravity(Gravity.BOTTOM, 0, 0);
+            toast.show();
+        }
+        else if (filepath == null || filepath.equals(""))
+        {
+            Toast toast = Toast.makeText(this, "Enter in a file path", Toast.LENGTH_SHORT);
+            toast.setText("Enter in a file path");
+            toast.setGravity(Gravity.BOTTOM, 0, 0);
+            toast.show();
+        }
+        else
+        {
+            Project newProject = new Project(projectName, filepath);
+            savedProjects.addProject(newProject);
+            savedProjects.saveProjects(this);
 
-        //add to file
-        //?????????
+            Intent moveToHost = new Intent(this, HostActivity.class);
+            moveToHost.putExtra("SavedProjects", (Parcelable) savedProjects);
+
+            startActivity(moveToHost);
+        }
     }
 }

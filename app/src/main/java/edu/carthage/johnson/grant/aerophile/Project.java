@@ -1,15 +1,21 @@
 package edu.carthage.johnson.grant.aerophile;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 /**
  * Created by Grant on 11/22/2015.
  */
-public class Project {
+public class Project implements Serializable, Parcelable{
     private String projectName;
-    private int partnerCount;
-    private int projectSize;
+    private int partnerCount = 0;
+    private String filepath;
 
-    public Project(){
-
+    public Project(String projectName,String filepath){
+        this.projectName = projectName;
+        this.filepath = filepath;
     }
 
     public String getProjectName() {
@@ -28,11 +34,35 @@ public class Project {
         this.partnerCount = partnerCount;
     }
 
-    public int getProjectSize() {
-        return projectSize;
+    public String getFilepath() { return filepath; }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setProjectSize(int projectSize) {
-        this.projectSize = projectSize;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(projectName);
+        dest.writeInt(partnerCount);
+        dest.writeString(filepath);
+    }
+
+    public static final Parcelable.Creator<Project> CREATOR = new Parcelable.Creator<Project>() {
+        public Project createFromParcel(Parcel in) {
+            return new Project(in);
+        }
+
+        public Project[] newArray(int size) {
+            return new Project[size];
+        }
+    };
+
+    private Project(Parcel in)
+    {
+        String test = in.readString();
+        projectName = in.readString();
+        partnerCount = in.readInt();
+        filepath = in.readString();
     }
 }
