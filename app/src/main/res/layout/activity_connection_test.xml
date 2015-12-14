@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="edu.carthage.johnson.grant.aerophile.AndroidClient">
+
+
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="input thing to send"
+        android:id="@+id/textout"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.10" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Text Bitch!!"
+        android:id="@+id/button"
+        android:onClick="onClick"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="waiting for responce"
+        android:id="@+id/textin"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.10"
+        android:textSize="15pt"/>
+
+</LinearLayout>
