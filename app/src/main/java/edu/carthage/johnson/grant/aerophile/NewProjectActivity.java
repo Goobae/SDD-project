@@ -20,6 +20,9 @@ public class NewProjectActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setTitle("Create a Project");
+
         setContentView(R.layout.activity_new_project);
         filePathTV = (TextView) this.findViewById(R.id.projectPathText);
         projectNameTV = (TextView) this.findViewById(R.id.projectNameTextView);

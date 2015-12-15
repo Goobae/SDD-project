@@ -20,6 +20,8 @@ public class HostActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Host a Project");
+
         setContentView(R.layout.activity_host);
         ArrayList<Project> projects = new ArrayList<>();
         savedProjects = new SavedProjects();

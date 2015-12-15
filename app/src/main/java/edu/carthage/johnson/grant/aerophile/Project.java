@@ -13,6 +13,10 @@ public class Project implements Serializable, Parcelable{
     private int partnerCount = 0;
     private String filepath;
 
+    public Project()
+    {
+
+    }
     public Project(String projectName,String filepath){
         this.projectName = projectName;
         this.filepath = filepath;

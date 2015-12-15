@@ -5,10 +5,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-
 
     <application
         android:allowBackup="true"
@@ -65,7 +63,10 @@
             android:name=".QRGenerated"
             android:label="activity_qrgenerated" >
         </activity>
-
+        <activity
+            android:name=".partnerProject"
+            android:label="@string/title_activity_partner_project" >
+        </activity>
     </application>
 
 </manifest>
